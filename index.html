@@ -36,31 +36,12 @@
       <p>Developed by NineEm</p>
     </div>
   </footer>
-  <script>
-  fetch("content.json")
-    .then(res => res.json())
-    .then(data => {
-      const categoryList = document.getElementById("category-list");
-      const articleList = document.getElementById("article-list");
-
-      // แสดงหมวดหมู่
-      data.categories.forEach(cat => {
-        const li = document.createElement("li");
-        li.textContent = cat.name;
-        categoryList.appendChild(li);
-      });
-
-      // แสดงบทความ
-      data.articles.forEach(article => {
-        const div = document.createElement("div");
-        div.classList.add("article-card");
-        div.innerHTML = `
-          <h3>${article.title}</h3>
-          <p>${article.summary}</p>
-        `;
-        articleList.appendChild(div);
-      });
-    });
+<script>
+fetch("content.json")
+  .then(res => res.json())
+  .then(data => {
+    console.log("Data from JSON:", data); 
+  });
 </script>
 </body>
 </html>

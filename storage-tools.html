@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Local Storage Tools</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      margin: 10px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #4a90e2;
+      color: #fff;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #357ab8;
+    }
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Local Storage Tools</h1>
+  <button id="exportBtn">Export Local Storage</button>
+  <button id="importBtn">Import Local Storage</button>
+  <input type="file" id="fileInput" accept="application/json" />
+
+  <script>
+    // ===== Export Local Storage =====
+    document.getElementById("exportBtn").addEventListener("click", function () {
+      const data = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        data[key] = localStorage.getItem(key);
+      }
+      const jsonData = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonData], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "localStorage-data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      alert("Export เรียบร้อย! ได้ไฟล์ localStorage-data.json");
+    });
+
+    // ===== Import Local Storage =====
+    const importBtn = document.getElementById("importBtn");
+    const fileInput = document.getElementById("fileInput");
+
+    importBtn.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          for (const key in data) {
+            localStorage.setItem(key, data[key]);
+          }
+          alert("Import เสร็จสิ้น! Local Storage ถูกอัพเดตแล้ว");
+        } catch (err) {
+          alert("ไฟล์ไม่ถูกต้อง หรือไม่ใช่ JSON");
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>

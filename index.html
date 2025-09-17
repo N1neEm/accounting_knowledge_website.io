@@ -14,6 +14,7 @@
       <h1>บัญชีพื้นฐานออนไลน์</h1>
     </div>
   </header>
+
   <div class="container main-container">
     <aside class="sidebar">
       <nav>
@@ -21,16 +22,48 @@
         <ul id="category-list"></ul>
       </nav>
     </aside>
+
     <main class="content">
       <h2>บทความล่าสุด</h2>
       <div id="article-list" class="article-grid"></div>
     </main>
   </div>
+
   <a href="storage-tools.html">Export or Import<botton></botton></a>
+
   <footer class="footer">
     <div class="container footer-inner">
-      <p>Developed by NIneEm</p>
+      <p>Developed by NineEm</p>
     </div>
   </footer>
+
+  <!-- ✅ ดึงข้อมูลจาก content.json -->
+  <script>
+    fetch("data/content.json")
+      .then(res => res.json())
+      .then(data => {
+        const categoryList = document.getElementById("category-list");
+        const articleList = document.getElementById("article-list");
+
+        // แสดงหมวดหมู่
+        data.categories.forEach(cat => {
+          const li = document.createElement("li");
+          li.textContent = cat.name;
+          categoryList.appendChild(li);
+        });
+
+        // แสดงบทความ
+        data.articles.forEach(article => {
+          const div = document.createElement("div");
+          div.classList.add("article-card");
+          div.innerHTML = `
+            <h3>${article.title}</h3>
+            <p>${article.summary}</p>
+          `;
+          articleList.appendChild(div);
+        });
+      });
+  </script>
 </body>
 </html>
+

@@ -39,7 +39,7 @@
 
   <!-- ✅ ดึงข้อมูลจาก content.json -->
   <script>
-    fetch("data/content.json")
+    fetch("content.json")
       .then(res => res.json())
       .then(data => {
         const categoryList = document.getElementById("category-list");
